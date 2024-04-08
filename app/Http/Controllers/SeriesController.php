@@ -11,9 +11,10 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        $filmes = ['Naruto', 'One piece', 'Demon Slsyer'];
+     
+        $series = ['Naruto', 'One piece', 'Demon Slsyer', 'Bleach','Dragon Boll'];
 
-        echo $filmes[0];
+        return view('series.index')->with('series', $series);
     }
 
     /**
