@@ -1,14 +1,8 @@
-<a href="/series/criar">Adicionar Serie Nova</a>
-
 <x-layout title="Séries">
-    <ul>
+    <a href="/series/criar" class="btn btn-dark mb-2">Adicionar Série Nova</a>
+    <ul class="list-group">
         @foreach ($series as $serie)
-        <li>{{$serie}}</li>
+        <li class="list-group-item">{{$serie}}</li>
         @endforeach
     </ul>
 </x-layout>
-
-<script>
-    const series = @json($series);
-</script>
-    
