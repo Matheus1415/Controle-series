@@ -1,3 +1,5 @@
+<a href="/series/criar">Adicionar Serie Nova</a>
+
 <x-layout title="Séries">
     <ul>
         @foreach ($series as $serie)
