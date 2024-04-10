@@ -5,4 +5,8 @@
         @endforeach
     </ul>
 </x-layout>
+
+<script>
+    const series = @json($series);
+</script>
     
