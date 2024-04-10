@@ -4,6 +4,5 @@
         <li>{{$serie}}</li>
         @endforeach
     </ul>
-    <p slot='Paragrafo aleatorio'></p>
 </x-layout>
     
