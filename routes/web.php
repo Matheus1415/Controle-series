@@ -8,5 +8,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('/series',[SeriesController::class, 'index']);
-Route::get('/series/criar',[SeriesController::class, 'create']);
+Route::get('/series', [SeriesController::class, 'index'])->name('series.index');
+Route::get('/series/criar', [SeriesController::class, 'create'])->name('series.create');
+Route::post('/series/salvar', [SeriesController::class, 'store'])->name('series.store');
