@@ -5,18 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Series;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\Else_;
 
 class SeriesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-     
-        $series = Series::query()->orderBy('nome')->get();
-        return view('series.index')->with('series', $series);
+        $series = Series::orderBy('nome')->get();
+        $messagemSucesso = $request->session()->get('messagem.sucesso');
+
+        $request->session()->forget('messagem.sucesso');
+
+        return view('series.index')->with('series', $series)
+                                   ->with('messagemSucesso', $messagemSucesso);
     }
 
     public function create()
@@ -24,36 +25,38 @@ class SeriesController extends Controller
         return view('series.create');
     }
 
-
     public function store(Request $request)
     {
-        $nomeSerie = $request->input('nome');
-        $serie = new Series();
-        $serie->nome = $nomeSerie;
-        $serie->save();
+        $serie = Series::create($request->all());
 
-        return redirect('/series');
+        return redirect()->route('series.index')->with('messagem.sucesso', "Série {$serie->nome} adicionada com sucesso");
     }
+    
+    public function destroy(Request $request, $id)
+    {
+        $serie = Series::findOrFail($id);
+        $nomeSerie = $serie->nome;
 
-
-    public function show(string $id)
+        Series::destroy($id);
+        return redirect()->route('series.index')->with('messagem.sucesso',"Série {$nomeSerie} removida com sucesso");
+    }
+    
+    public function edit(Series $serie)
+    {
+        return view('series.edit')->with('serie',$serie);
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $serie = Series::findOrFail($id);
+        $serie->update($request->all());
+        return redirect()->route('series.index')->with('messagem.sucesso', "Série {$serie->nome} atualizada com sucesso");
+    }
+    
+    
+    public function show($id)
     {
         //
     }
 
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
-    }
 }
