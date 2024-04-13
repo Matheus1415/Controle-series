@@ -12,7 +12,7 @@ class Series extends Model
     protected $fillable = ['nome'];
     protected $with = ['temporadas'];
 
-    public function Temporadas()
+    public function temporadas()
     {
         //Uma serie tem varias temporadas
         return $this->hasMany(Temporada::class, 'series_id');

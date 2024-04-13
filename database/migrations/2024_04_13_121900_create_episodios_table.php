@@ -6,21 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('episodios', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('numero');
-            $table->foreignId('temporada_id')->constrained();
+            $table->foreignId('temporada_id')->constrained()->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('episodios');
