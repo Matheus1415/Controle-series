@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Series;
 use Illuminate\Http\Request;
 
 class TemporadaController extends Controller
 {
 
-    public function index($serie)
+    public function index(Series $series)
     {
-        $temporadas = $serie->temporadas;
-        return view('temporada.index')->with('temporadas', $temporadas);
+        $temporada = $series->temporadas()->with('episodes')->get();
+        return view('temporada.index')->with('seasons', $temporada)->with('series', $series);
     }
-    
-
- 
+  
     public function create()
     {
         //
