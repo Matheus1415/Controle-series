@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SeriesController;
 
+Route::get('/', [SeriesController::class, 'index'])->name('series.index');
+
 Route::prefix('series')->group(function(){
-    Route::get('/', [SeriesController::class, 'index'])->name('series.index');
     Route::get('/criar', [SeriesController::class, 'create'])->name('series.create');
     Route::post('/salvar', [SeriesController::class, 'store'])->name('series.store');
     Route::get('/edit/{series}',[SeriesController::class, 'edit'])->name('series.edit');
