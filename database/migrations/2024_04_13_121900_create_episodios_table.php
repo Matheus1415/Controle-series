@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('episodios', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedTinyInteger('numero');
+            $table->foreignId('temporada_id')->constrained();
         });
     }
 
