@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SeriesFormRequest;
-use App\Models\Episodio;
+use App\Models\Episode;
+use App\Models\Season;
 use App\Models\Series;
-use App\Models\Temporada;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SeriesController extends Controller
 {
     public function index(Request $request)
     {
         $series = Series::all();
-        $mensagemSucesso = $request->session()->get('mensagem.sucesso');
+        $mensagemSucesso = session('mensagem.sucesso');
 
-        return view('series.index', compact('series', 'mensagemSucesso'));
+        return view('series.index')->with('series', $series)
+            ->with('mensagemSucesso', $mensagemSucesso);
     }
 
     public function create()
@@ -25,41 +27,37 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request)
     {
-
         $serie = Series::create($request->all());
-        $temporadas = [];
-        for($i = 1 ;$i <= $request->temporadaQty; $i++){
-            $temporadas[] =[
+        $seasons = [];
+        for ($i = 1; $i <= $request->seasonsQty; $i++) {
+            $seasons[] = [
                 'series_id' => $serie->id,
-                'numero' => $i,
+                'number' => $i,
             ];
         }
+        Season::insert($seasons);
 
-        Temporada::insert($temporadas);
-
-        $episodio = [];
-        foreach($serie->temporadas as $temporada){
-            for($e = 1; $e <= $request->episodioQty; $e++){
-                $episodio[] = [
-                    'temporada_id' => $temporada->id,
-                    'numero' => $e,
+        $episodes = [];
+        foreach ($serie->seasons as $season) {
+            for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
+                $episodes[] = [
+                    'season_id' => $season->id,
+                    'number' => $j
                 ];
             }
         }
-        
-        Episodio::insert($episodio);
+        Episode::insert($episodes);
 
-        return redirect()->route('series.index')
+        return to_route('series.index')
             ->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso");
     }
 
     public function destroy(Series $series)
     {
-        $nomeSerie = $series->nome;
         $series->delete();
 
-        return redirect()->route('series.index')
-            ->with('mensagem.sucesso', "Série '{$nomeSerie}' removida com sucesso");
+        return to_route('series.index')
+            ->with('mensagem.sucesso', "Série '{$series->nome}' removida com sucesso");
     }
 
     public function edit(Series $series)
@@ -67,12 +65,12 @@ class SeriesController extends Controller
         return view('series.edit')->with('serie', $series);
     }
 
-    public function update(SeriesFormRequest $request, Series $series)
+    public function update(Series $series, SeriesFormRequest $request)
     {
         $series->fill($request->all());
         $series->save();
 
-        return redirect()->route('series.index')
+        return to_route('series.index')
             ->with('mensagem.sucesso', "Série '{$series->nome}' atualizada com sucesso");
     }
 }

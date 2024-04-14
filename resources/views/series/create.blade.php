@@ -1,33 +1,37 @@
 <x-layout title="Nova Série">
     <form action="{{ route('series.store') }}" method="post">
-        @csrf    
+        @csrf
+
         <div class="row mb-3">
-            <div class="col-md-8 mb-3">
-                <label for="Inome" class="form-label">Nome:</label>
+            <div class="col-8">
+                <label for="nome" class="form-label">Nome:</label>
                 <input type="text"
-                       id="Inome"
+                       autofocus
+                       id="nome"
                        name="nome"
                        class="form-control"
                        value="{{ old('nome') }}">
             </div>
-            <div class="col-md-2 mb-3">
-                <label for="InumeroTemporada" class="form-label">N° Temporada:</label>
+
+            <div class="col-2">
+                <label for="seasonsQty" class="form-label">Nº Temporadas:</label>
                 <input type="text"
-                       id="InumeroTemporada"
-                       name="numeroTemporada"
+                       id="seasonsQty"
+                       name="seasonsQty"
                        class="form-control"
-                       value="{{ old('numeroTemporada') }}">
+                       value="{{ old('seasonsQty') }}">
             </div>
-            <div class="col-md-2 mb-3">
-                <label for="IepisodioPorTemporada" class="form-label">Episodio:</label>
+
+            <div class="col-2">
+                <label for="episodesPerSeason" class="form-label">Eps / Temporada:</label>
                 <input type="text"
-                       id="IepisodioPorTemporada"
-                       name="episodioPorTemporada"
+                       id="episodesPerSeason"
+                       name="episodesPerSeason"
                        class="form-control"
-                       value="{{ old('episodioPorTemporada') }}">
+                       value="{{ old('episodesPerSeason') }}">
             </div>
         </div>
-    
+
         <button type="submit" class="btn btn-primary">Adicionar</button>
-    </form>  
+    </form>
 </x-layout>

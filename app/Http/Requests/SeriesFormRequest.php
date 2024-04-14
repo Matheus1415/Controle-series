@@ -6,26 +6,25 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SeriesFormRequest extends FormRequest
 {
-
-    public function authorize(): bool
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
         return true;
     }
 
-    public function rules(): array
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
     {
         return [
-            'nome' => ['required','string','max:65',"min:3"],
+            'nome' => ['required', 'min:2'],
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'nome.required' => 'O campo nome é obrigatorio',
-            'nome.min' => "O campo nome precisa pelomenos de :min caracteres",
-            'nome.max' => "O campo nome precisa no máximo de :max caracteres",
-        ];
-    }
-
 }

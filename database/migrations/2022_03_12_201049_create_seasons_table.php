@@ -8,20 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('temporadas', function (Blueprint $table) {
+        Schema::create('seasons', function (Blueprint $table) {
             $table->id();
+            $table->unsignedTinyInteger('number');
             $table->foreignId('series_id')->constrained()->onDelete('cascade');
-            $table->unsignedTinyInteger('numero');
             $table->timestamps();
         });
-        
     }
 
-    public function down(): void
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        Schema::dropIfExists('temporadas');
+        Schema::dropIfExists('seasons');
     }
 };
