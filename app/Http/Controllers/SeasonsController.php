@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Series;
+use App\Models\Season; 
 
 class SeasonsController extends Controller
 {
-    public function index(Series $series)
+    public function index(Series $serie)
     {
-        $seasons = $series->seasons()->with('episodes')->get();
+        // Obter as temporadas relacionadas à série
+        $seasons = $serie->seasons;
 
-        return view('seasons.index')->with('seasons', $seasons)->with('series', $series);
+        return view('seasons.exibirTemporada')->with('seasons', $seasons)->with('series', $serie);
     }
 }
