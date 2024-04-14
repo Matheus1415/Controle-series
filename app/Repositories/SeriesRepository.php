@@ -2,9 +2,10 @@
  namespace App\Repositories;
 
 use App\Http\Requests\SeriesFormRequest;
+use App\Models\Series;
 
  class SeriesRepository {
-    public function add(SeriesFormRequest $Request) {
+    public function add(SeriesFormRequest $request): Series {
         DB::transaction(function () use ($request) {
             $serie = Series::create($request->all());
             $seasons = [];
