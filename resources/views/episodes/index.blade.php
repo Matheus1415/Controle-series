@@ -1,4 +1,4 @@
-<x-layout title="Episódios da temporada">
+<x-layout title="Episódios da temporada" :mensagemSucesso="$messagemSucesso">
     @if ($episodes->isNotEmpty())
         <form action="{{ route('seasons.episodes.update', $season->id) }}" method="POST">
             @csrf

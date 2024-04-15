@@ -13,19 +13,24 @@ class EpisodesController extends Controller
     {
         return view('episodes.index', [
             'episodes' => $season->episodes,
-            'season' => $season
+            'season' => $season,
+            'messagemSucesso' => session('messagem.sucesso')
         ]);
     }
     
+
     public function update(Request $request, Season $season)
     {
-        $watchedEpisodeIds = $request->input('watched_episodes', []); 
-        $season->episodes->each(function (Episode $episode) use ($watchedEpisodeIds) {
-            $episode->watched = in_array($episode->id, $watchedEpisodeIds); 
+        // Obtenha a lista de episódios assistidos do formulário
+        $watchedEpisodes = $request->input('episodes', []);
+
+        // Itere sobre todos os episódios da temporada e atualize a propriedade 'watched' com base nos episódios assistidos
+        $season->episodes->each(function(Episode $episode) use($watchedEpisodes) {
+            // Verifica se o ID do episódio está na lista de episódios assistidos
+            $episode->watched = in_array($episode->id, $watchedEpisodes);
+            $episode->save(); // Salva as alterações no episódio
         });
 
-        $season->save(); 
-
-        return redirect()->back()->with('success', 'Status de episódios assistidos atualizado com sucesso');
+        return redirect()->back()->with('messagem.sucesso', 'Episódios atualizados com sucesso');
     }
 }
