@@ -16,12 +16,19 @@ class SeriesController extends Controller
     }
     public function index(Request $request)
     {
+        // Obtém todas as séries
         $series = Series::all();
+        
+        // Obtém a mensagem de sucesso da sessão, se existir
         $mensagemSucesso = $request->session()->get('mensagem.sucesso');
-
-        return view('series.index')->with('series', $series)
-            ->with('mensagemSucesso', $mensagemSucesso);
+    
+        // Retorna a view 'series.index', passando as variáveis 'series' e 'mensagemSucesso'
+        return view('series.index', [
+            'series' => $series,
+            'mensagemSucesso' => $mensagemSucesso // Passa a variável $mensagemSucesso para a view
+        ]);
     }
+    
 
     public function create()
     {
