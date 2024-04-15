@@ -6,31 +6,26 @@ use App\Models\Episode;
 use App\Models\Season;
 use Illuminate\Http\Request;
 
-class EpisodesController extends Controller
+class EpisodesController
 {
-
     public function index(Season $season)
     {
         return view('episodes.index', [
             'episodes' => $season->episodes,
-            'season' => $season,
-            'messagemSucesso' => session()
+            'mensagemSucesso' => session('mensagem.sucesso')
         ]);
     }
-    
 
     public function update(Request $request, Season $season)
     {
-        // Obtenha a lista de episódios assistidos do formulário
-        $watchedEpisodes = $request->input('episodes', []);
-
-        // Itere sobre todos os episódios da temporada e atualize a propriedade 'watched' com base nos episódios assistidos
-        $season->episodes->each(function(Episode $episode) use($watchedEpisodes) {
-            // Verifica se o ID do episódio está na lista de episódios assistidos
+        $watchedEpisodes = $request->episodes;
+        $season->episodes->each(function (Episode $episode) use ($watchedEpisodes) {
             $episode->watched = in_array($episode->id, $watchedEpisodes);
-            $episode->save(); // Salva as alterações no episódio
         });
 
-        return redirect()->back()->with('messagem.sucesso', 'Episódios atualizados com sucesso');
+        $season->push();
+
+        return to_route('episodes.index', $season->id)
+            ->with('mensagem.sucesso', 'Episódios marcados como assistidos');
     }
 }

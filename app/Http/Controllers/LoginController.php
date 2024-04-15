@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Episode;
-use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class LoginController
 {
-
     public function index()
     {
         return view('login.index');
@@ -17,9 +14,17 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-        if(!Auth::attempt($request->all())){
-            return redirect('/')->back()->withErrors(['Usúario ou senha invalida']);
+        if (!Auth::attempt($request->only(['email', 'password']))) {
+            return redirect()->back()->withErrors('Usuário ou senha inválidos');
         }
+
+        return to_route('series.index');
     }
-    
+
+    public function destroy()
+    {
+        Auth::logout();
+
+        return to_route('login');
+    }
 }
