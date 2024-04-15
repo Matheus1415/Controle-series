@@ -14,7 +14,7 @@ class EpisodesController extends Controller
         return view('episodes.index', [
             'episodes' => $season->episodes,
             'season' => $season,
-            'messagemSucesso' => session('messagem.sucesso')
+            'messagemSucesso' => session()
         ]);
     }
     

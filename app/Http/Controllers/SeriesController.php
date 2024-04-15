@@ -16,6 +16,7 @@ class SeriesController extends Controller
     }
     public function index(Request $request)
     {
+        
         // Obtém todas as séries
         $series = Series::all();
         
