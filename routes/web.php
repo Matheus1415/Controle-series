@@ -8,6 +8,8 @@ use App\Http\Controllers\SeriesController;
 use App\Http\Middleware\Autenticador;
 
 Route::get('/',[LoginController::class, 'index'])->name('login');
+Route::post('/',[LoginController::class, 'store'])->name('login.store');
+Route::get('/register',[LoginController::class, 'create'])->name('user.create');
 
 Route::middleware([Autenticador::class])->group(function () {
     Route::prefix('series')->group(function(){
