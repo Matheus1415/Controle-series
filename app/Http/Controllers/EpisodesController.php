@@ -12,7 +12,8 @@ class EpisodesController
     {
         return view('episodes.index', [
             'episodes' => $season->episodes,
-            'mensagemSucesso' => session('mensagem.sucesso')
+            'mensagemSucesso' => session('mensagem.sucesso'),
+            'season' => $season,
         ]);
     }
 
@@ -21,11 +22,11 @@ class EpisodesController
         $watchedEpisodes = $request->episodes;
         $season->episodes->each(function (Episode $episode) use ($watchedEpisodes) {
             $episode->watched = in_array($episode->id, $watchedEpisodes);
+            $episode->save(); // Salvar cada episódio individualmente
         });
-
-        $season->push();
-
-        return to_route('episodes.index', $season->id)
+    
+        return redirect()->route('episodes.index', $season->id)
             ->with('mensagem.sucesso', 'Episódios marcados como assistidos');
     }
+    
 }
