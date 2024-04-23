@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\UsersController;
 use App\Http\Middleware\Autenticador;
+use App\Mail\SeriesCreated;
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/', [LoginController::class, 'store'])->name('login.store');
@@ -31,4 +32,6 @@ Route::prefix('series')->group(function () {
     });
 
 });
+
+
 
