@@ -39,7 +39,7 @@ class SeriesController extends Controller
         
         // Corrigindo a chamada ao método Mail::to()
         $userList = User::all();
-        foreach ($userList as $user) {
+        foreach ($userList as $index => $user) {
              // Corrigindo a chamada ao construtor da classe SeriesCreated
             $email = new SeriesCreated(
                 $serie->nome,
@@ -47,7 +47,8 @@ class SeriesController extends Controller
                 $request->seasonsQty,
                 $request->episodesPerSeason
             );
-            Mail::to($user)->queue($email);
+            $when = now($index * 5);
+            Mail::to($user)->later($when, $email);
         }
         
         return redirect()->route('series.index')
