@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\SeriesCreated as EventsSeriesCreated;
 use App\Mail\SeriesCreated;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,7 +22,7 @@ class EmailUsersAboutSeriesCreated
     /**
      * Handle the event.
      */
-    public function handle(object $event): void
+    public function handle(EventsSeriesCreated $event): void
     {
         $userList = User::all();
         foreach ($userList as $index => $user) {
@@ -33,7 +34,7 @@ class EmailUsersAboutSeriesCreated
                 $event->episodesPerSeason
             );
             $when = now($index * 5);
-            Mail::to($user)->later($when, $email);
+            Mail ::to($user)->later($when, $email);
         }
     }
 }
