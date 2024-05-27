@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SeriesCreated as EventsSeriesCreated;
-use App\Http\Middleware\Autenticador;
 use App\Http\Requests\SeriesFormRequest;
 use App\Mail\SeriesCreated;
 use App\Models\Series;
@@ -11,12 +9,13 @@ use App\Models\User;
 use App\Repositories\SeriesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class SeriesController extends Controller
 {
     public function __construct(private SeriesRepository $repository)
     {
-        $this->middleware('autenticador')->except('index');
+        $this->middleware('auth')->except('index');
     }
 
     public function index(Request $request)
@@ -35,19 +34,19 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request)
     {
-        dd($request->file('cover'));
+        $coverPath = $request->hasFile('cover')
+            ? $request->file('cover')->store('series_cover', 'public')
+            : null;
+        $request->coverPath = $coverPath;
         $serie = $this->repository->add($request);
-
-        $eventSerieCriated = new EventsSeriesCreated(
+        \App\Events\SeriesCreated::dispatch(
             $serie->nome,
             $serie->id,
             $request->seasonsQty,
             $request->episodesPerSeason,
         );
-        
-        event($eventSerieCriated);
-        
-        return redirect()->route('series.index')
+
+        return to_route('series.index')
             ->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso");
     }
 

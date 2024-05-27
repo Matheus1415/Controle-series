@@ -14,21 +14,25 @@ class SeriesCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
     public function __construct(
-        public readonly string $nome,
-        public readonly int $id,
-        public readonly int $seasonsQty,
-        public readonly int $episodesPerSeason,
-    )
-    {
-    }
+        public readonly string $seriesName,
+        public readonly int $seriesId,
+        public readonly int $seriesSeasonsQty,
+        public readonly int $seriesEpisodesPerSeason,
+    ) {}
 
-
-    public function broadcastOn(): array
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return \Illuminate\Broadcasting\Channel|array
+     */
+    public function broadcastOn()
     {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
+        return new PrivateChannel('channel-name');
     }
 }

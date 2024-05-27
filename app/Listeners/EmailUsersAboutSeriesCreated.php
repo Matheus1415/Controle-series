@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\SeriesCreated as EventsSeriesCreated;
+use App\Events\SeriesCreated as SeriesCreatedEvent;
 use App\Mail\SeriesCreated;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,26 +13,32 @@ class EmailUsersAboutSeriesCreated implements ShouldQueue
 {
     /**
      * Create the event listener.
+     *
+     * @return void
      */
     public function __construct()
     {
         //
     }
 
-
-    public function handle(EventsSeriesCreated $event): void
+    /**
+     * Handle the event.
+     *
+     * @param  object  $event
+     * @return void
+     */
+    public function handle(SeriesCreatedEvent $event)
     {
         $userList = User::all();
         foreach ($userList as $index => $user) {
-
             $email = new SeriesCreated(
-                $event->nome,
-                $event->id,
-                $event->seasonsQty,
-                $event->episodesPerSeason
+                $event->seriesName,
+                $event->seriesId,
+                $event->seriesSeasonsQty,
+                $event->seriesEpisodesPerSeason,
             );
-            $when = now($index * 5);
-            Mail ::to($user)->later($when, $email);
+            $when = now()->addSeconds($index * 5);
+            Mail::to($user)->later($when, $email);
         }
     }
 }
