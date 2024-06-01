@@ -17,9 +17,13 @@ class ApiController extends Controller
         $this->seriesRepository = $seriesRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Series::all();
+        if(!$request->has('nome')){
+            return Series::paginate(5);
+        }
+
+        return Series::where('nome','LIKE','%'.$request->nome.'%')->get()->paginate(5);
     }
 
     public function store(SeriesFormRequest $request)
