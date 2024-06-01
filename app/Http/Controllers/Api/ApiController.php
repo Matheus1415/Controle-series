@@ -60,4 +60,6 @@ class ApiController extends Controller
         Series::destroy($id);
         return response()->noContent();
     }
+
+
 }
