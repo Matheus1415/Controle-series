@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
     private SeriesRepository $seriesRepository;
-
+    
     public function __construct(SeriesRepository $seriesRepository)
     {
         $this->seriesRepository = $seriesRepository;
